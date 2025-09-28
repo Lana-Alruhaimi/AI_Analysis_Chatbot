@@ -17,7 +17,7 @@ try:
                 "content": "Explain in one sentence why the sky is blue",
             }
         ],
-        model="llama-3.1-8b-instant", 
+        model="llama-3.3-70b-versatile", 
     )
 
     # 3. Print the model's response
