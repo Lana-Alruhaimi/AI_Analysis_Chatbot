@@ -75,4 +75,17 @@ else:
         except Exception as e:
                 # print(f"API Error for review: {e}") # Uncomment for debugging
                 return "API_ERROR"
+        
+    ## Running sentiment analysis
+    print("Running Sentiment Analysis...")
+    Senti_Labels = []
+    texts_to_analyze = df[New_Col].astype(str).tolist()
+
+    for i, text in enumerate(texts_to_analyze):
+        if i % 10 == 0: # progress indicator every 10 reviews
+            print(f"Processing review {i+1} of {len(texts_to_analyze)}...")
+
+        label = Get_Senti_Groq(text)
+        Senti_Labels.append(label)
+
             
