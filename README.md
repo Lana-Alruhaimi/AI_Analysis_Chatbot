@@ -9,6 +9,9 @@ Three sequential steps:
 2.  (Sentiment_Analysis.py): Uses the Groq API (via the `llama-3.3-70b-versatile` model) to perform sentiment analysis on the cleaned reviews and saves the results.
 3.  (Data_Chatbot.py): A Streamlit application that allows users to chat about the analyzed data, offering a choice between the high-speed **Groq Llama 3.3** model and a **local Hugging Face GPT-2** model.
 
+## Technology Stack
+Language used is Python (libraries used: pandas, openpyxl, groq, streamlit, transformers, torch)
+
 ##  Setup and Installation
 
 ### Create and Activate Environment
