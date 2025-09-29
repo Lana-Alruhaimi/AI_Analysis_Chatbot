@@ -102,6 +102,10 @@ def generate_local_response(prompt): #Generate response with local Hugging Face 
     
 ## Streamlit
 
+#Chat history
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
 def main():
     st.set_page_config(page_title="Data Review Chatbot", layout="centered")
     st.title("Model Selector")
@@ -132,6 +136,35 @@ def main():
         st.write(f"Data loaded successfully: **{len(df)} records**")
 
     st.dataframe(df.head(5)[['product_name', 'Sentiment_Label', 'Customer_Feedback']], use_container_width=True)
+
+    # Chat Interaction
+    # display chat
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+
+    # Input handling
+    if prompt := st.chat_input("Questions about the data?"):
+        st.session_state.messages.append({"role": "user", "content": prompt}) # Add user message to chat history
+        with st.chat_message("user"):
+            st.markdown(prompt)
+
+        # Response gen
+        with st.chat_message("assistant"):
+            with st.spinner(f"Generating response with {st.session_state.model_choice}..."):
+                data_sample = df[['product_name', 'Sentiment_Label', 'Customer_Feedback']].head(5).to_dict('records') # create context & send sample to LLM
+            
+                if st.session_state.model_choice == "Groq Llama 3.3 (Fast API)":
+                    full_context = f"A sample of the data reviews is: {data_sample}. The dataframe columns are: {list(df.columns)}. Focus only on data points related to product_name, Sentiment_Label, and Customer_Feedback."
+                    response = generate_groq_response(prompt, full_context)
+                
+                elif st.session_state.model_choice == "Local GPT-2 (Hugging Face)":
+                    response = generate_local_response(prompt)  # GPT 2 doesn't handle complex context well so we only pass the prompt
+                
+                else:
+                    response = "Model selection error."
+                
+                st.markdown(response)
 
 
 
