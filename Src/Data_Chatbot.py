@@ -99,3 +99,42 @@ def generate_local_response(prompt): #Generate response with local Hugging Face 
         return f"(Local GPT-2 Response Less accurate on data queries) {text}"
     except Exception as e:
         return f"Local Generation Error: {e}"
+    
+## Streamlit
+
+def main():
+    st.set_page_config(page_title="Data Review Chatbot", layout="centered")
+    st.title("Model Selector")
+
+    # Load data and check for errors
+    df = load_data()
+    if df is None:
+        st.stop() 
+
+    # Sidebar creation
+    with st.sidebar:
+        st.header("Model Configuration")
+        
+        # Models (based on API Key availability)
+        available_models = ["Local GPT-2 (Hugging Face)"]
+        if GROQ_API_KEY and GROQ_CLIENT:
+            available_models.insert(0, "Groq Llama 3.3 (Fast API)")
+
+        # Selectbox for model choice 
+        st.session_state.model_choice = st.selectbox(
+            "Select LLM",
+            options=available_models
+        )
+        st.info(f"Currently selected model: **{st.session_state.model_choice}**")
+        
+        # Data Context
+        st.subheader("Data Check")
+        st.write(f"Data loaded successfully: **{len(df)} records**")
+
+    st.dataframe(df.head(5)[['product_name', 'Sentiment_Label', 'Customer_Feedback']], use_container_width=True)
+
+
+
+if __name__ == "__main__":
+    main()
+
