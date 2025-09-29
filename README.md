@@ -2,6 +2,13 @@
 
 This repository contains a three-part pipeline designed to analyze product reviews, perform sentiment analysis using a Large Language Model (LLM), and deploy the results in a real-time data analysis chatbot built with Streamlit.
 
+## Table of Content
+- Overview
+- Technology Stack
+- Author and Acknowledgement
+- Setup and Installation
+  
+
 ## Overview
 Three sequential steps:
 
