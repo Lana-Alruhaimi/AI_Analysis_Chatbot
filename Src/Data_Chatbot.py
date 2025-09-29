@@ -15,6 +15,7 @@ HF_MODEL_NAME = "gpt2" #openai-community/gpt2
 
 
 ## Load data
+@st.cache_data # avoid unneeded computations
 def load_data(): #loads analyzed DataFrame and terminates the app if the file is missing
     if not os.path.exist(Data_path):
         st.error(f"ERROR: file not found: {Data_path}")
@@ -42,4 +43,13 @@ else:
     st.warning("GROQ_API_KEY not found in environment variables. Groq model option will be disabled.")
 
 
-
+## Initialization (Hugging Face)
+@st.cache_data
+def load_local_generator(): #load local Hugging Face GPT-2 generator
+    try: 
+        generator = pipeline('text-generation', model=HF_MODEL_NAME, device=-1)
+        set_seed(42) # For reproducible local generation
+        return generator
+    except Exception as e:
+        st.error(f"ERROR Could not load local Hugging Face model ({HF_MODEL_NAME}): {e}")
+        return None
