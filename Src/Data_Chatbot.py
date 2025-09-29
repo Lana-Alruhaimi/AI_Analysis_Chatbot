@@ -53,3 +53,29 @@ def load_local_generator(): #load local Hugging Face GPT-2 generator
     except Exception as e:
         st.error(f"ERROR Could not load local Hugging Face model ({HF_MODEL_NAME}): {e}")
         return None
+    
+LOCAL_GENERATOR = load_local_generator()
+
+
+## GROQ response generation
+def generate_groq_response(prompt, data_context): #Generate response with Groq API Llama 3.3
+    if not GROQ_CLIENT:
+        return "ERROR: Groq client not initialized. Check your GROQ_API_KEY."
+
+    system_prompt = (
+        "You are an expert data analyst and customer support bot. Your goal is to answer questions about the provided product review data. The data is structured as a Python dictionary. Do not perform any code execution. Keep answers concise and informative. If the answer is not in the data, state it clearly."
+        f"\n\n--- DATA CONTEXT ---\n{data_context}")
+    
+    try:
+        chat_completion = GROQ_CLIENT.chat.completions.create(
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": prompt}
+            ],
+            model=GROQ_MODEL,
+            temperature=0.3,
+            max_tokens=500
+        )
+        return chat_completion.choices[0].message.content
+    except Exception as e:
+        return f"ERROR during Groq generation: {e}"
