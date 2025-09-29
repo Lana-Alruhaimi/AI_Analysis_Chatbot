@@ -79,3 +79,23 @@ def generate_groq_response(prompt, data_context): #Generate response with Groq A
         return chat_completion.choices[0].message.content
     except Exception as e:
         return f"ERROR during Groq generation: {e}"
+
+
+## GPT2 response generation
+def generate_local_response(prompt): #Generate response with local Hugging Face GPT2
+    if not LOCAL_GENERATOR:
+        return "ERROR: Local GPT-2 generator failed to load."
+
+    try:
+        # GPT-2 is not designed for instruction following, so we just prime it.
+        response = LOCAL_GENERATOR(
+            f"User asked about the data: {prompt} The answer is:",
+            max_length=150,
+            num_return_sequences=1,
+            pad_token_id=LOCAL_GENERATOR.tokenizer.eos_token_id
+        )
+        # Extract and clean the generated text
+        text = response[0]['generated_text'].split("The answer is:")[-1].strip()
+        return f"(Local GPT-2 Response Less accurate on data queries) {text}"
+    except Exception as e:
+        return f"Local Generation Error: {e}"
