@@ -10,6 +10,7 @@ Output_Path = os.path.join(Input_Dir, 'analyzed_sales_data.pkl')
 
 print(f"Data file expected at: {Input_Path}") #not excel because this is the cleaned data
 
+
 ## Load data
 try:
     df = pd.read_pickle(Input_Path)
@@ -34,6 +35,7 @@ else:
     print(f"Using new column: {New_Col}")  
 
 
+
 ## Groq setup
 # load API Key from OS and set via command line
 
@@ -48,3 +50,29 @@ else:
         print(f"Groq Client Initialized (Model: {GROQ_MODEL}).")
     except Exception as e:
         print(f"Error: {e}")
+
+    # Prompting
+    SYSTEM_PROMPT = ("You are a sentiment classifier, analyze the given customer reviews. Your responses should be only one word, and it should be one of these three: 'POSITIVE', 'NEGATIVE', 'NEUTRAL'. Do not include any other text or symbols. Do not change the capitialization")
+    def Get_Senti_Groq(review_text): #calls API to get sentiment label
+        if not GROQ_API_KEY:
+            return"ERROR_KEY_MISSING"
+        
+        try:
+            chat_completion = client.chat.completions.create(
+                    messages=[
+                        {"role": "system", "content": SYSTEM_PROMPT},
+                        {"role": "user", "content": review_text}
+                    ],
+                    model=GROQ_MODEL,
+                    temperature=0.01,
+                    max_tokens=5 # because we only need 1 word
+                ) 
+            #Extract and clean
+            label = chat_completion.choices[0].message.content.upper().strip()
+            if label in ["POSITIVE", "NEGATIVE", "NEUTRAL"]:
+                return label
+            return "NEUTRAL" # Default if classification is ambiguous
+        except Exception as e:
+                # print(f"API Error for review: {e}") # Uncomment for debugging
+                return "API_ERROR"
+            
