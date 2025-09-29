@@ -12,6 +12,9 @@ Three sequential steps:
 ## Technology Stack
 Language used is Python (libraries used: pandas, openpyxl, groq, streamlit, transformers, torch)
 
+## Author and Acknowledgement
+Code written by Lana, Data provided by Amazon
+
 ##  Setup and Installation
 
 ### Create and Activate Environment
@@ -21,4 +24,3 @@ Ensure you have Anaconda or Miniconda installed, then create and activate a new 
 ```bash
 conda create -n llm_env python=3.10
 conda activate llm_env 
-
