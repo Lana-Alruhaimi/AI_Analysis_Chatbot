@@ -88,4 +88,15 @@ else:
         label = Get_Senti_Groq(text)
         Senti_Labels.append(label)
 
+
+## Display results
+df['Sentiment_Label'] = Senti_Labels
+print("\n\nAnalysis complete. Displaying first 10 results:\n")
+display_cols = ['product', New_Col, 'Sentiment_Label']
+print(df[display_cols].head(10).to_string())
+
+
+## Save Results
+df.to_pickle(Output_Path)
+print(f"\nSentiment analysis results successfully saved to '{Output_Path}'.")
             
