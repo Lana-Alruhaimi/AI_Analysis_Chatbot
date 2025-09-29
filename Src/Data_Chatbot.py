@@ -27,3 +27,19 @@ def load_data(): #loads analyzed DataFrame and terminates the app if the file is
     except Exception as e:
         st.error(f"ERROR: {e}")
         return None
+    
+## Initialization (GROQ)
+GROQ_CLIENT = None
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+
+if GROQ_API_KEY:
+    try:
+        GROQ_CLIENT = Groq(api_key=GROQ_API_KEY)
+    except Exception as e:
+        st.warning(f"ERROR in initializing Groq client: {e}. Groq option will be disabled.")
+        GROQ_API_KEY = None # disable groq if error
+else:
+    st.warning("GROQ_API_KEY not found in environment variables. Groq model option will be disabled.")
+
+
+
