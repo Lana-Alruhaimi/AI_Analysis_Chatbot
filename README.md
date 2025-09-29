@@ -24,10 +24,22 @@ Code written by Lana, Data provided by Amazon
 
 ##  Setup and Installation
 
-### Create and Activate Environment
-
-Ensure you have Anaconda or Miniconda installed, then create and activate a new environment:
+Ensure you have Anaconda or Miniconda installed, then create and activate a new environment, you also need the Groq API Key to access the Llama 3.3 model. You must set this key as an environment variable before running the scripts.:
 
 ```bash
+#CONDA ENV:
 conda create -n llm_env python=3.10
-conda activate llm_env 
+conda activate llm_env
+
+
+#GROQ API KEY:
+#(replace "YOUR_API_KEY_HERE" with your actual key.)
+set GROQ_API_KEY="YOUR_API_KEY_HERE"
+
+
+#RUNNING SCRIPTS (in order):
+python Data_Analysis_Cleaning.py
+python Sentiment_Analysis.py
+streamlit run 3_Data_Chatbot.py
+
+
