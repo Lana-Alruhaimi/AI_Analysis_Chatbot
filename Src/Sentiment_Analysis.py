@@ -92,7 +92,7 @@ else:
 ## Display results
 df['Sentiment_Label'] = Senti_Labels
 print("\n\nAnalysis complete. Displaying first 10 results:\n")
-display_cols = ['product', New_Col, 'Sentiment_Label']
+display_cols = ['product_name', New_Col, 'Sentiment_Label']
 print(df[display_cols].head(10).to_string())
 
 
