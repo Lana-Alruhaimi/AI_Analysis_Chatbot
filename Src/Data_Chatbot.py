@@ -17,7 +17,7 @@ HF_MODEL_NAME = "gpt2" #openai-community/gpt2
 ## Load data
 @st.cache_data # avoid unneeded computations
 def load_data(): #loads analyzed DataFrame and terminates the app if the file is missing
-    if not os.path.exist(Data_path):
+    if not os.path.exists(Data_path):
         st.error(f"ERROR: file not found: {Data_path}")
         st.warning ("Make sure you have ran (Sentiment_Analysis.py) first")
         return None
