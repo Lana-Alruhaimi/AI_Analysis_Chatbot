@@ -43,6 +43,6 @@ set GROQ_API_KEY="YOUR_API_KEY_HERE"
 #RUNNING SCRIPTS (in order):
 python Data_Analysis_Cleaning.py
 python Sentiment_Analysis.py
-streamlit run 3_Data_Chatbot.py
+streamlit run Data_Chatbot.py
 
 
